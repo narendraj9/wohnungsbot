@@ -20,25 +20,8 @@ export function generateSearchUrl(configuration: Configuration): string {
     )
   );
 
-  let searchUrl = 'https://www.immobilienscout24.de/Suche/de/berlin/berlin';
-
-  if (overlappingDistricts.length === 1) {
-    searchUrl +=
-      '/' +
-      overlappingDistricts
-        .map((district) =>
-          district.label
-            .replace(/[()]/g, '')
-            .replace(/ /g, '-')
-            .replace(/ä/g, 'ae')
-            .replace(/ö/g, 'oe')
-            .replace(/ü/g, 'ue')
-            .replace(/ß/g, 'ss')
-        )
-        .join('_');
-  }
-
-  searchUrl += `/wohnung-mieten?numberofrooms=${numberToUrlFloatString(
+  let searchUrl = "https://www.immobilienscout24.de/Suche/de/berlin/berlin/wohnung-mieten" +
+    `?numberofrooms=${numberToUrlFloatString(
     configuration.filter.minimumRooms
   )}-${numberToUrlFloatString(configuration.filter.maximumRooms)}${
     configuration.filter.minimumArea
@@ -48,15 +31,10 @@ export function generateSearchUrl(configuration: Configuration): string {
       : ''
   }&pricetype=rentpermonth&price=-${numberToUrlFloatString(
     configuration.filter.maximumRent
-  )}`;
-
-  if (overlappingDistricts.length > 1) {
-    searchUrl +=
-      '&geocodes=' +
-      overlappingDistricts
-        .map((district) => district.geoNodeId.toString())
-        .join(',');
-  }
+  )}&geocodes=${
+    overlappingDistricts
+      .map((district) => district.geoNodeId.toString())
+      .join(',')}`;
 
   if (configuration.filter.noSwapApartment) {
     searchUrl += '&exclusioncriteria=swapflat';
