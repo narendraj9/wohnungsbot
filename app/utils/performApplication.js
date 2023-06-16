@@ -120,7 +120,7 @@ export default function* performApplication(
   dispatch(setBotMessage('Abschicken :)'));
   yield sleep(3000);
 
-  const submitButtonSelector = '#is24-expose-modal .button-primary';
+  const submitButtonSelector = `[data-ng-click="submit()"];`
 
   // make sure the submit button gets clicked, if not re-try
   while (
