@@ -149,6 +149,12 @@ export default function* performApplication(
     );
   }
 
+  // Make sure that the user gets a chance to fill in the captcha code if there
+  // is a form input with ID: `captchaData.userAnswer`
+  yield electronUtils.humanInteraction(async () => {
+    return electronUtils.elementExists('#captchaData.userAnswer');
+  });
+
   dispatch(setBotMessage('Fertig.'));
 
   const saveDataButtonSelector = `[data-qa="saveProfileButton"]`;
